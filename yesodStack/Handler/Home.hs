@@ -1,12 +1,10 @@
 module Handler.Home where
 
-
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
-
 
 import Yesod
 import Import
@@ -32,7 +30,9 @@ import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3,
 --         $(widgetFile "homepage")
 
 data Person = Person { name :: Text
-,age ::Int }
+                       ,age :: Int
+                     }
+
 instance ToJSON Person where
   toJSON Person {..} = object
             [ "name" .= name
