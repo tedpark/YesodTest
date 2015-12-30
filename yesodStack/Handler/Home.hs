@@ -1,5 +1,14 @@
 module Handler.Home where
 
+
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TypeFamilies #-}
+
+
+import Yesod
 import Import
 import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3,
                               withSmallInput)
@@ -11,15 +20,27 @@ import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3,
 -- The majority of the code you will write in Yesod lives in these handler
 -- functions. You can spread them across multiple files if you are so
 -- inclined, or create a single monolithic file.
-getHomeR :: Handler Html
-getHomeR = do
-    (formWidget, formEnctype) <- generateFormPost sampleForm
-    let submission = Nothing :: Maybe (FileInfo, Text)
-        handlerName = "getHomeR" :: Text
-    defaultLayout $ do
-        aDomId <- newIdent
-        setTitle "Welcome To Yesod!"
-        $(widgetFile "homepage")
+
+-- getHomeR :: Handler Html
+-- getHomeR = do
+--     (formWidget, formEnctype) <- generateFormPost sampleForm
+--     let submission = Nothing :: Maybe (FileInfo, Text)
+--         handlerName = "getHomeR" :: Text
+--     defaultLayout $ do
+--         aDomId <- newIdent
+--         setTitle "Welcome To Yesod!"
+--         $(widgetFile "homepage")
+
+data Person = Person { name :: Text
+,age ::Int }
+instance ToJSON Person where
+  toJSON Person {..} = object
+            [ "name" .= name
+            , "age"  .= age
+            ]
+
+getHomeR :: Handler Value
+getHomeR = returnJson $ Person "Michael" 28
 
 postHomeR :: Handler Html
 postHomeR = do
